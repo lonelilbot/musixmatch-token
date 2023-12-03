@@ -31,7 +31,7 @@ async function run() {
       console.log(`valid token`, token);
 
       writeFileSync("token.txt", token);
-      appendFileSync("tokens.txt", token);
+      appendFileSync("tokens.txt", `\n${token}`);
     }
   }
 }
