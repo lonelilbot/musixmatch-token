@@ -36,14 +36,19 @@ async function run({ type, id }: { type: string; id: string }) {
   }
 }
 
-run({
-  type: "desktop",
-  id: "web-desktop-app-v1.0",
-});
-run({
-  type: "mobile",
-  id: "mac-ios-ipad-v1.0",
-});
+const x = Math.floor(Math.random() * 2) == 0;
+
+if (x) {
+  run({
+    type: "desktop",
+    id: "web-desktop-app-v1.0",
+  });
+} else {
+  run({
+    type: "mobile",
+    id: "mac-ios-ipad-v1.0",
+  });
+}
 
 function random() {
   return Math.random()
