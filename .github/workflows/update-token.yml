@@ -1,0 +1,44 @@
+name: Update Token
+on:
+  push:
+    paths:
+      - '.github/workflows/update-token.yml'
+  
+  schedule:
+  - cron: "*/5 * * * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update_token:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - run: pnpm i
+      - run: pnpm start
+
+      - run: echo `date +%s` > last-updated.txt
+          
+      - name: Push to GitHub 
+        run: |
+          git config user.name lonelil
+          git config user.email 51315646+lonelil@users.noreply.github.com
+          git add .
+          git commit -m "Update ($(date +'%Y-%m-%dT%H:%M:%S'))"
+          git push
