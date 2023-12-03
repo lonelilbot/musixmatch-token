@@ -1,12 +1,12 @@
 import axios from "axios";
 import { appendFileSync, writeFileSync } from "fs";
 
-async function run() {
+async function run({ type, id }: { type: string; id: string }) {
   const { data } = await axios.get(
     `https://apic-desktop.musixmatch.com/ws/1.1/token.get`,
     {
       params: {
-        app_id: "web-desktop-app-v1.0",
+        app_id: id,
         t: random(),
       },
       headers: {
@@ -30,13 +30,20 @@ async function run() {
     ) {
       console.log(`valid token`, token);
 
-      writeFileSync("token.txt", token);
-      appendFileSync("tokens.txt", `\n${token}`);
+      writeFileSync(`out/${type}-token.txt`, token);
+      appendFileSync(`out/${type}-tokens.txt`, `\n${token}`);
     }
   }
 }
 
-run();
+run({
+  type: "desktop",
+  id: "web-desktop-app-v1.0",
+});
+run({
+  type: "mobile",
+  id: "mac-ios-ipad-v1.0",
+});
 
 function random() {
   return Math.random()
