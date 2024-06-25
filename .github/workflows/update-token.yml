@@ -45,3 +45,17 @@ jobs:
           
           Co-authored-by: lonelil <51315646+lonelil@users.noreply.github.com>" || exit 0
           git push
+
+  retrigger:
+    name: Retrigger workflow
+    runs-on: ubuntu-latest
+    if: '${{ always() }}'
+    needs: update_token
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Retrigger workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Update Token
