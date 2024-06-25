@@ -5,14 +5,18 @@ on:
       - ".github/workflows/update-token.yml"
       - "src/index.ts"
 
-  schedule:
-    - cron: "*/5 * * * *"
+  #schedule:
+  #  - cron: "*/5 * * * *"
 
   workflow_dispatch:
 
 permissions:
   contents: write
   actions: write
+
+concurrency:
+  group: "token"
+  cancel-in-progress: true
 
 jobs:
   update_token:
