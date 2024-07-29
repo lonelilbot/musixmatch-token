@@ -5,8 +5,8 @@ on:
       - ".github/workflows/update-token.yml"
       - "src/index.ts"
 
-  #schedule:
-  #  - cron: "*/5 * * * *"
+  schedule:
+    - cron: "*/5 * * * *"
 
   workflow_dispatch:
 
