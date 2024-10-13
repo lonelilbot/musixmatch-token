@@ -1,23 +1,19 @@
-import axios from "axios";
 import { appendFileSync, writeFileSync } from "fs";
 
-async function run({ type, id }: { type: string; id: string }) {
-  const { data } = await axios.get(
-    `https://apic-desktop.musixmatch.com/ws/1.1/token.get`,
+async function run(props: { type: string; id: string }) {
+  const data = await fetch(
+    `https://apic-desktop.musixmatch.com/ws/1.1/token.get?${new URLSearchParams({
+    app_id: props.id,
+  })}`,
     {
-      params: {
-        app_id: id,
-        t: random(),
-      },
       headers: {
         Cookie: "x-mxm-user-id=",
         authority: "apic-desktop.musixmatch.com",
         "User-Agent":
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0",
       },
-      maxRedirects: 50,
     }
-  );
+  ).then((res) => res.json())
 
   console.log(data);
 
@@ -30,8 +26,8 @@ async function run({ type, id }: { type: string; id: string }) {
     ) {
       console.log(`valid token`, token);
 
-      writeFileSync(`out/${type}-token.txt`, token);
-      appendFileSync(`out/${type}-tokens.txt`, `\n${token}`);
+      writeFileSync(`out/${props.type}-token.txt`, token);
+      appendFileSync(`out/${props.type}-tokens.txt`, `\n${token}`);
     }
   }
 }
@@ -48,11 +44,4 @@ if (x) {
     type: "mobile",
     id: "mac-ios-ipad-v1.0",
   });
-}
-
-function random() {
-  return Math.random()
-    .toString(36)
-    .replace(/[^a-z]+/g, "")
-    .slice(2, 10);
 }
