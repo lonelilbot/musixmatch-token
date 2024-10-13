@@ -24,20 +24,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
+      - uses: oven-sh/setup-bun@v2
 
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: true
+      - run: bun install
 
-      - run: pnpm start
+      - run: bun run src/index.ts
 
       - run: echo `date +%s` > last-updated.txt
 
